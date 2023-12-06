@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplication Table</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Add jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Add jQuery Validation Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+</head>
+
+<body>
+
+    <h2>Will's Dynamic Multiplication Table</h2>
+    <h3>Enter four numbers, -50 through 50.</h3>
+
+    <!--Create the form and button. Do not allow input <-50 or >50.-->
+    <form id="numberForm">
+        <label for="number1">Column Value 1:</label>
+        <input type="text" id="number1" name="number1" maxlength="3" required><br>
+
+        <label for="number2">Column Value 2:</label>
+        <input type="text" id="number2" name="number2" maxlength="3" required><br>
+
+        <label for="number3">Row Value 1:</label>
+        <input type="text" id="number3" name="number3" maxlength="3" required><br>
+
+        <label for="number4">Row Value 2:</label>
+        <input type="text" id="number4" name="number4" maxlength="3" required><br>
+
+        <button type="button" onclick="generateTable()">Generate Table</button>
+    </form>
+
+    <div id="result"></div>
+
+    <!-- Javascript section to create the table (or display error message) -->
+    <script>
+        $(document).ready(function () {
+            $("#numberForm").validate({
+                rules: {
+                    number1: {
+                        required: true,
+                        range: [-50, 50]
+                    },
+                    number2: {
+                        required: true,
+                        range: [-50, 50]
+                    },
+                    number3: {
+                        required: true,
+                        range: [-50, 50]
+                    },
+                    number4: {
+                        required: true,
+                        range: [-50, 50]
+                    }
+                },
+                messages: {
+                    number1: {
+                        required: "Please enter a value.",
+                        range: "Please enter a value between -50 and 50."
+                    },
+                    number2: {
+                        required: "Please enter a value.",
+                        range: "Please enter a value between -50 and 50."
+                    },
+                    number3: {
+                        required: "Please enter a value.",
+                        range: "Please enter a value between -50 and 50."
+                    },
+                    number4: {
+                        required: "Please enter a value.",
+                        range: "Please enter a value between -50 and 50."
+                    }
+                },
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element);
+                }
+            });
+        });
+
+        function generateTable() {
+            if ($("#numberForm").valid()) {
+                // Read values from the form
+                var num1 = parseInt($("#number1").val());
+                var num2 = parseInt($("#number2").val());
+                var num3 = parseInt($("#number3").val());
+                var num4 = parseInt($("#number4").val());
+
+                var resultDiv = document.getElementById("result");
+                resultDiv.innerHTML = "<h3>Will's Multiplication Table</h3>";
+
+                // Create table element
+                var table = document.createElement("table");
+                table.border = "1";
+                table.className = "multiplication-table";
+
+                // For loop that builds the table by inserting cells
+                var headerRow = table.insertRow();
+                headerRow.insertCell();
+                for (var i = Math.min(num3, num4); i <= Math.max(num3, num4); i++) {
+                    var headerCell = headerRow.insertCell();
+                    headerCell.textContent = i;
+                }
+
+                // For loops that insert the correct values in their corresponding positions
+                for (var i = Math.min(num1, num2); i <= Math.max(num1, num2); i++) {
+                    var row = table.insertRow();
+                    var headerCell = row.insertCell();
+                    headerCell.textContent = i;
+
+                    for (var j = Math.min(num3, num4); j <= Math.max(num3, num4); j++) {
+                        var cell = row.insertCell();
+                        cell.textContent = i * j;
+                    }
+                }
+
+                resultDiv.appendChild(table);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
